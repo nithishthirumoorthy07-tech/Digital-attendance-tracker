@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings · Digital Attendance Tracker</title>
+  <meta name="description" content="Customize theme, reset data and learn about the Digital Attendance Tracker project." />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="loader"><div class="spinner"></div></div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">🎓</div>
+        <div><h1>Attendance</h1><span>Digital Tracker</span></div>
+      </div>
+      <nav class="nav">
+        <a href="index.html"><span class="ico">📊</span> Dashboard</a>
+        <a href="students.html"><span class="ico">👥</span> Students</a>
+        <a href="attendance.html"><span class="ico">✅</span> Attendance</a>
+        <a href="reports.html"><span class="ico">📈</span> Reports</a>
+        <a href="settings.html"><span class="ico">⚙️</span> Settings</a>
+      </nav>
+      <div class="sidebar-footer">© 2026 Digital Attendance Tracker</div>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="main page-enter">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="icon-btn hamburger" id="hamburger">☰</button>
+          <div class="titles">
+            <h2>Settings</h2>
+            <p>Preferences and project information.</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="clock-box">
+            <div class="time" id="clock-time">--:--:--</div>
+            <div class="date" id="clock-date">—</div>
+          </div>
+          <button class="icon-btn" id="theme-btn" title="Toggle theme"><span id="theme-icon">🌙</span></button>
+        </div>
+      </header>
+
+      <div class="grid-2">
+        <section class="card">
+          <h3>Appearance</h3>
+          <p class="sub">Switch between light and dark mode.</p>
+          <div class="setting-row">
+            <div>
+              <strong>Dark Mode</strong>
+              <div class="desc">Use a darker color palette, easier on the eyes.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" data-theme-toggle id="dark-toggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <h3 style="margin-top:24px;">Data Management</h3>
+          <p class="sub">All data is stored locally in your browser.</p>
+          <div class="setting-row">
+            <div>
+              <strong>Reset All Data</strong>
+              <div class="desc">Deletes all students and attendance, then reloads sample data.</div>
+            </div>
+            <button class="btn btn-danger" id="reset-btn">🗑️ Reset</button>
+          </div>
+          <div class="setting-row">
+            <div>
+              <strong>Storage Used</strong>
+              <div class="desc" id="storage-info">—</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>About the Project</h3>
+          <p class="sub">College mini-project overview.</p>
+          <div class="about-list">
+            <div><strong>Title</strong> Digital Attendance Tracker</div>
+            <div><strong>Objective</strong> A smart, paperless attendance management system for educational institutions.</div>
+            <div><strong>Storage</strong> Browser LocalStorage (works fully offline)</div>
+            <div><strong>Charts</strong> Chart.js (bundled locally)</div>
+          </div>
+          <p style="margin-top:14px;font-size:0.82rem;color:var(--text-soft);">Built with:</p>
+          <div class="tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Chart.js</span>
+            <span class="tag">LocalStorage</span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Reset confirm modal -->
+  <div class="modal-overlay" id="reset-modal">
+    <div class="modal">
+      <h3>Reset All Data?</h3>
+      <p style="color:var(--text-soft);font-size:0.9rem;">This permanently deletes all students and attendance records, then restores the original sample data. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('reset-modal')">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-reset">Yes, Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    /* ---------- Settings page logic ---------- */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Dark mode switch
+      const toggle = document.getElementById("dark-toggle");
+      toggle.checked = DB.getTheme() === "dark";
+      toggle.addEventListener("change", () => {
+        const next = toggle.checked ? "dark" : "light";
+        DB.setTheme(next);
+        applyTheme(next);
+        toast(`${next === "dark" ? "Dark" : "Light"} mode enabled`, "success");
+      });
+
+      // Storage info
+      const bytes = JSON.stringify(localStorage).length;
+      document.getElementById("storage-info").textContent =
+        `${DB.getStudents().length} students · ${Object.keys(DB.getAttendance()).length} attendance days · ~${(bytes / 1024).toFixed(1)} KB`;
+
+      // Reset flow
+      document.getElementById("reset-btn").addEventListener("click", () => openModal("reset-modal"));
+      document.getElementById("confirm-reset").addEventListener("click", () => {
+        DB.resetAll();
+        closeModal("reset-modal");
+        toast("Data reset. Reloading...", "success");
+        setTimeout(() => location.reload(), 900);
+      });
+    });
+  </script>
+</body>
+</html>

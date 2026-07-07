@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance · Digital Attendance Tracker</title>
+  <meta name="description" content="Mark and update daily student attendance with present/absent toggles." />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="loader"><div class="spinner"></div></div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">🎓</div>
+        <div><h1>Attendance</h1><span>Digital Tracker</span></div>
+      </div>
+      <nav class="nav">
+        <a href="index.html"><span class="ico">📊</span> Dashboard</a>
+        <a href="students.html"><span class="ico">👥</span> Students</a>
+        <a href="attendance.html"><span class="ico">✅</span> Attendance</a>
+        <a href="reports.html"><span class="ico">📈</span> Reports</a>
+        <a href="settings.html"><span class="ico">⚙️</span> Settings</a>
+      </nav>
+      <div class="sidebar-footer">© 2026 Digital Attendance Tracker</div>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="main page-enter">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="icon-btn hamburger" id="hamburger">☰</button>
+          <div class="titles">
+            <h2>Mark Attendance</h2>
+            <p>Select a date and record present / absent.</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="clock-box">
+            <div class="time" id="clock-time">--:--:--</div>
+            <div class="date" id="clock-date">—</div>
+          </div>
+          <button class="icon-btn" id="theme-btn" title="Toggle theme"><span id="theme-icon">🌙</span></button>
+        </div>
+      </header>
+
+      <section class="card" style="margin-bottom:20px;">
+        <div class="toolbar" style="margin-bottom:0;">
+          <div class="field" style="margin-bottom:0;">
+            <label for="att-date">Attendance Date</label>
+            <input class="input" type="date" id="att-date" />
+          </div>
+          <div class="field" style="margin-bottom:0;flex:1;min-width:180px;">
+            <label>&nbsp;</label>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-ghost btn-sm" id="all-present">✅ All Present</button>
+              <button class="btn btn-ghost btn-sm" id="all-absent">❌ All Absent</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <div class="v" id="m-present" style="color:var(--success)">0</div>
+          <div class="l">Present</div>
+        </div>
+        <div class="mini-stat">
+          <div class="v" id="m-absent" style="color:var(--danger)">0</div>
+          <div class="l">Absent</div>
+        </div>
+        <div class="mini-stat">
+          <div class="v" id="m-total">0</div>
+          <div class="l">Total Students</div>
+        </div>
+        <div class="mini-stat">
+          <div class="v" id="m-pct" style="color:var(--brand)">0%</div>
+          <div class="l">Attendance %</div>
+        </div>
+      </div>
+
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+          <div>
+            <h3>Student List</h3>
+            <p class="sub" id="att-status" style="margin-bottom:0;">—</p>
+          </div>
+          <button class="btn btn-primary" id="save-btn">💾 Save Attendance</button>
+        </div>
+        <div class="att-list" id="att-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/attendance.js"></script>
+</body>
+</html>

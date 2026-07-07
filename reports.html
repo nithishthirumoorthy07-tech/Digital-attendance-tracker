@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports · Digital Attendance Tracker</title>
+  <meta name="description" content="Daily, weekly and monthly attendance reports with charts and statistics." />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="loader"><div class="spinner"></div></div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">🎓</div>
+        <div><h1>Attendance</h1><span>Digital Tracker</span></div>
+      </div>
+      <nav class="nav">
+        <a href="index.html"><span class="ico">📊</span> Dashboard</a>
+        <a href="students.html"><span class="ico">👥</span> Students</a>
+        <a href="attendance.html"><span class="ico">✅</span> Attendance</a>
+        <a href="reports.html"><span class="ico">📈</span> Reports</a>
+        <a href="settings.html"><span class="ico">⚙️</span> Settings</a>
+      </nav>
+      <div class="sidebar-footer">© 2026 Digital Attendance Tracker</div>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="main page-enter">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="icon-btn hamburger" id="hamburger">☰</button>
+          <div class="titles">
+            <h2>Reports & Analytics</h2>
+            <p>Visualize attendance trends and performance.</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="clock-box">
+            <div class="time" id="clock-time">--:--:--</div>
+            <div class="date" id="clock-date">—</div>
+          </div>
+          <button class="icon-btn" id="theme-btn" title="Toggle theme"><span id="theme-icon">🌙</span></button>
+        </div>
+      </header>
+
+      <section class="card" style="margin-bottom:20px;">
+        <div class="toolbar" style="margin-bottom:0;">
+          <div class="field" style="margin-bottom:0;">
+            <label for="range">Report Period</label>
+            <select class="input" id="range">
+              <option value="daily">Daily (Today)</option>
+              <option value="weekly" selected>Weekly (Last 7 days)</option>
+              <option value="monthly">Monthly (Last 30 days)</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:0;flex:1;">
+            <label>&nbsp;</label>
+            <p class="sub" id="range-info" style="margin:0;">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stat cards -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-ico ico-blue">🗓️</div>
+          <div class="value" id="r-days">0</div>
+          <div class="label">Days Recorded</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico ico-green">✅</div>
+          <div class="value" id="r-present">0</div>
+          <div class="label">Total Present</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico ico-red">❌</div>
+          <div class="value" id="r-absent">0</div>
+          <div class="label">Total Absent</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico ico-indigo">📌</div>
+          <div class="value" id="r-pct">0%</div>
+          <div class="label">Average Attendance</div>
+        </div>
+      </section>
+
+      <div class="grid-2">
+        <section class="card">
+          <h3>Daily Attendance Trend</h3>
+          <p class="sub">Attendance percentage over the period.</p>
+          <div class="chart-box"><canvas id="lineChart"></canvas></div>
+        </section>
+        <section class="card">
+          <h3>Present vs Absent</h3>
+          <p class="sub">Overall split for the period.</p>
+          <div class="chart-box"><canvas id="pieChart"></canvas></div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:18px;">
+        <h3>Per-Student Attendance %</h3>
+        <p class="sub">How each student performed across the period.</p>
+        <div class="chart-box" style="height:340px;"><canvas id="barChart"></canvas></div>
+      </section>
+
+      <section class="card" style="margin-top:18px;">
+        <h3>Student Performance Summary</h3>
+        <p class="sub">Attended days out of total recorded days.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Present</th><th>Absent</th><th>Attendance %</th><th>Status</th></tr>
+            </thead>
+            <tbody id="perf-rows"></tbody>
+          </table>
+        </div>
+        <div id="perf-empty"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="lib/chart.umd.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>
